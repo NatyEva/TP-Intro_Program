@@ -14,7 +14,7 @@ def index_page(request):
 def getAllImagesAndFavouriteList(request):
     images = []
     favourite_list = []
-    #prueba de check in hola que tal 
+    
     
 
     return images, favourite_list
