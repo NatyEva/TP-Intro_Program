@@ -62,3 +62,6 @@ def deleteFavourite(request):
 @login_required
 def exit(request):
     pass
+
+def login_view(request):
+    return render(request, 'login.html')
