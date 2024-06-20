@@ -4,7 +4,7 @@
 from django.shortcuts import redirect, render
 from .layers.services import services_nasa_image_gallery
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -61,7 +61,10 @@ def deleteFavourite(request):
 
 @login_required
 def exit(request):
-    pass
+    logout(request)
+    return redirect('home') # cuando cierro sesion me redirige al login automaticamente
 
-def login_view(request):
-    return render(request, 'login.html')
+@login_required
+def login_views(request):
+    login(request)
+    return redirect(request,'login.html')  #me redirige a la planilla de login
