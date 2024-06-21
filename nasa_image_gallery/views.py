@@ -55,9 +55,9 @@ def getAllFavouritesByUser(request):
 @login_required
 def saveFavourite(request):
     
-    favourite_list = repositories.saveFavourite(request)
+    favourite_list = services_nasa_image_gallery.saveFavourite(request)
         
-    return render(request,'favourites.html', {'favourite_list': favourite_list})
+    return render(request, 'favourites.html',{'favourite_list': favourite_list} )
 
 
 
