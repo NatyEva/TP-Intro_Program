@@ -16,9 +16,9 @@ def getAllImages(input=None):
         nasa_card=mapper.fromRequestIntoNASACard(object)#formatea al abjeto en una Nasa Card
         
         images.append(nasa_card)#agrega a la lista imagenes una nasa_card 
-   
+        
 
-    return images#retorna la lista de nasa_card
+    return images #retorna la lista de nasa_card
 
 
 def getImagesBySearchInputLike(input):
