@@ -1,0 +1,105 @@
+{% extends 'header.html' %} {% block content %}
+<main>
+    <style>
+        #nasacard-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px; /* Espacio entre las tarjetas */
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            padding: 5px;
+            display: flex; /* Flexbox para alinear imagen y texto */
+            
+        }
+        .card img {
+            max-width: 100%; /* Aumenta el tamaño de la imagen */
+            border-bottom: 1px solid #ccc;
+            margin-right: 10px; /* Espacio entre la imagen y el texto */
+        }
+        .card-body {
+            padding: 5px;
+            flex: 1; /* Toma el espacio restante disponible */
+        }
+        .card-title, .card-text {
+            margin: 0; /* Elimina el margen predeterminado de los encabezados y párrafos */
+        }
+        @media (max-width: 1200px) {
+            #nasacard-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 800px) {
+            #nasacard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <h1 class="text-center">Galería de Imágenes de la NASA</h1>
+    <div class="d-flex justify-content-center" style="margin-bottom: 1%">
+        <!-- Buscador del sitio -->
+        <form class="d-flex" action="{% url 'buscar' %}" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" name="query" placeholder="Escribí una palabra" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+    </div>
+    
+    <div id="nasacard-container">
+        {% for card in page_obj.object_list %}
+        <div class="col">
+            <div class="card">
+                <img src="{{ card.image_url }}" alt="{{ card.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ card.title }}</h5>
+                    <p class="card-text">{{ card.description }}</p>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="card-footer text-center">
+                    <form method="post" action="{% url 'agregar-favorito' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="{{ card.title }}">
+                        <input type="hidden" name="description" value="{{ card.description }}">
+                        <input type="hidden" name="image_url" value="{{ card.image_url }}">
+                        <input type="hidden" name="date" value="{{ card.date }}"> 
+                        {% if card in favourite_list %}
+                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button> 
+                        {% else %}
+                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> 
+                        {% endif %}
+
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <span>
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+        <div>
+            {% if page_obj.has_previous %}
+                <a href="?page=1&items_per_page={{ items_per_page }}&query={{ search_msg }}">Primera</a>
+                <a href="?page={{ page_obj.previous_page_number }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Anterior</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Siguiente</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Última</a>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+        <form method="GET" id="itemsPerPageForm">
+            <label for="items_per_page">Items por página:</label>
+            <input type="number" name="items_per_page" id="items_per_page" value="{{ items_per_page }}" min="1" onchange="this.form.submit()">
+            <input type="hidden" name="query" value="{{ search_msg }}">
+        </form>
+    </div>
+    <div>
+    <h1 class="text-center">Galería de Imágenes de la NASA</h1>   
+    </div>
+</main>
+{% endblock %}
