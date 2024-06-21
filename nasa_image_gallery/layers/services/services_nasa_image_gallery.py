@@ -51,6 +51,10 @@ def getAllFavouritesByUser(request):
         return mapped_favourites
 
 
-def deleteFavourite(request):
-    favId = request.POST.get('id')
-    return repositories.deleteFavourite(favId) # borramos un favorito por su ID.
+def deleteFavourite(request,favId):
+    try:
+        success = repositories.deleteFavourite(favId)
+        return success  # Retornar True si se elimina correctamente, de lo contrario False
+    except Exception as e:
+        print(f"Error al eliminar el favorito: {e}")
+        return False

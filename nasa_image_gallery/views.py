@@ -104,8 +104,15 @@ def saveFavourite(request):
 
 @login_required
 def deleteFavourite(request):
-   favourite_list = services_nasa_image_gallery.deleteFavourite(request)
-   return render(request, 'favourites.html',{'favourite_list': favourite_list} )
+    favId = request.POST.get('id')
+    success = services_nasa_image_gallery.deleteFavourite(request, favId)
+    if success:
+        # Recuperar la lista actualizada de favoritos
+        favourite_list = services_nasa_image_gallery.getAllFavouritesByUser(request)
+        return render(request, 'favourites.html', {'favourite_list': favourite_list})
+    else:
+        # Manejar el caso de error o redirigir según sea necesario
+        return redirect('home')  # Redirigir a la página principal o manejar el error de otra manera
     
 
 
