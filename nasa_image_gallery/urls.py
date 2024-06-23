@@ -13,6 +13,8 @@ urlpatterns = [
     path('favourites/add/', views.saveFavourite, name='agregar-favorito'),
     path('favourites/delete/', views.deleteFavourite, name='borrar-favorito'),
 
+    path('load_images/', views.load_images, name='load_images'),
+
     path('exit/', views.exit, name='exit'),
     
 ]

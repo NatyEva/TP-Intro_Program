@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 from django.views.generic import ListView
 from django.core.paginator import Paginator
+from django.http import JsonResponse
+
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
     return render(request, 'index.html')
@@ -83,7 +85,11 @@ def search(request):
         'items_per_page': items_per_page, #La cantidad de elementos por página que se está utilizando actualmente
     }) 
 
-
+# función que maneja la carga de imágenes y devuelve los datos en formato JSON
+def load_images(request):
+    images, favourite_list = getAllImagesAndFavouriteList(request)
+    image_data = [{'url': image.url} for image in images]
+    return JsonResponse({'images': image_data})
 
 # las siguientes funciones se utilizan para implementar la sección de favoritos: traer los favoritos de un usuario, guardarlos, eliminarlos y desloguearse de la app.
 @login_required
