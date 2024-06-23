@@ -46,7 +46,8 @@ def home(request):
 
     return render(request, 'home.html', {
         'page_obj': page_obj,'images': images,
-        'favourite_list': favourite_list
+        'favourite_list': favourite_list,
+        'items_per_page': items_per_page,
     }) # # Renderiza la plantilla `home.html`y pasa el contexto a la plantilla:
     # `page_obj`: objeto de la página actual, que incluye las imágenes para la página y la información de paginación.
     # `images`: la lista completa de imágenes.
