@@ -49,7 +49,7 @@ def getAllFavouritesByUser(request):
             mapped_favourites.append(nasa_card)
 
         return mapped_favourites
-
+#agregue esto para hacer comit
 
 def deleteFavourite(request,favId):
     try:

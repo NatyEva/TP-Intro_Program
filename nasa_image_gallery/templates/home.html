@@ -59,12 +59,15 @@
                 <div class="card-footer text-center">
                     <form method="post" action="{% url 'agregar-favorito' %}">
                         {% csrf_token %}
-                        <input type="hidden" name="title" value="{{ imagen.title }}">
-                        <input type="hidden" name="description" value="{{ imagen.description }}">
-                        <input type="hidden" name="image_url" value="{{ imagen.image_url }}">
-                        <input type="hidden" name="date" value="{{ imagen.date }}"> {% if imagen in favourite_list %}
-                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button> {% else %}
-                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> {% endif %}
+                        <input type="hidden" name="title" value="{{ card.title }}">
+                        <input type="hidden" name="description" value="{{ card.description }}">
+                        <input type="hidden" name="image_url" value="{{ card.image_url }}">
+                        <input type="hidden" name="date" value="{{ card.date }}"> 
+                        {% if card in favourite_list %}
+                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button> 
+                        {% else %}
+                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> 
+                        {% endif %}
 
                     </form>
                 </div>
