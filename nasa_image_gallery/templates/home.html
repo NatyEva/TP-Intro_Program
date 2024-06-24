@@ -85,10 +85,12 @@
                         <input type="hidden" name="image_url" value="{{ card.image_url }}">
                         <input type="hidden" name="date" value="{{ card.date }}"> 
                         {% if card in favourite_list %}
-                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button> 
-                        {% else %}
-                            <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> 
-                        {% endif %}
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button>
+                        <textarea name="comment" placeholder="Añadir comentario..." required></textarea> <!-- Campo para el comentario -->
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">Guardar comentario</button> 
+                    {% else %}
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> 
+                    {% endif %}
 
                     </form>
                 </div>

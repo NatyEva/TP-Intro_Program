@@ -9,6 +9,8 @@ from django.contrib.auth import logout, login
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from .layers.generic.mapper import fromTemplateIntoNASACard
+from django.http import HttpResponseBadRequest
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -102,12 +104,18 @@ def getAllFavouritesByUser(request):
 
 @login_required
 def saveFavourite(request):
+    if request.method == 'POST':
+        nasa_card = fromTemplateIntoNASACard(request)  # Crea la instancia de NASACard desde los datos del formulario
+        comment = request.POST.get('comment', '')  # Obtiene el comentario del formulario
+        nasa_card.comment = comment
     
-    services_nasa_image_gallery.saveFavourite(request)
-    favourite_list = services_nasa_image_gallery.getAllFavouritesByUser(request)
-    
-    return render(request, 'favourites.html', {'favourite_list': favourite_list})
 
+        services_nasa_image_gallery.saveFavourite(request)
+        favourite_list = services_nasa_image_gallery.getAllFavouritesByUser(request)
+    
+        return render(request, 'favourites.html', {'favourite_list': favourite_list})
+    else:
+        return HttpResponseBadRequest('Invalid request method')
 
 
 @login_required

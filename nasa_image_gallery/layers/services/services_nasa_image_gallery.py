@@ -28,12 +28,22 @@ def getImagesBySearchInputLike(input):
 
 # añadir favoritos (usado desde el template 'home.html')
 def saveFavourite(request):
-    
-    fav = mapper.fromTemplateIntoNASACard(request) # transformamos un request del template en una NASACard.
-    fav.user = request.user # le seteamos el usuario correspondiente.
+    fav = mapper.fromTemplateIntoNASACard(request)  # transformamos un request del template en una NASACard.
+    fav.user = request.user  # le seteamos el usuario correspondiente.
 
-    return repositories.saveFavourite(fav) # lo guardamos en la base.
+    existing_fav = repositories.getFavouriteByUserAndDetails(
+        user=request.user,
+        title=fav.title,
+        description=fav.description,
+        image_url=fav.image_url,
+        date=fav.date
+    )
 
+    if existing_fav:
+        existing_fav.comment = fav.comment
+        return repositories.updateFavourite(existing_fav)
+    else:
+        return repositories.saveFavourite(fav)
 
 # usados en el template 'favourites.html'
 def getAllFavouritesByUser(request):
