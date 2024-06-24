@@ -5,12 +5,15 @@ from django.shortcuts import redirect, render
 from .layers.services import services_nasa_image_gallery
 from .layers.dao import repositories
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout, login,authenticate
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from .layers.generic.mapper import fromTemplateIntoNASACard
 from django.http import HttpResponseBadRequest
+from django.core.mail import send_mail  #envia el mail a la casilla de la persona registrada
+from .forms import CustomUserCreationForm
+
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -141,3 +144,36 @@ def exit(request):
 def login_views(request):
     login(request)
     return redirect(request,'login.html')  #me redirige a la planilla de login
+
+def registration(request):
+    data = {
+        'form': CustomUserCreationForm()
+    }
+    if request.method=='POST':
+        user_creation_form = CustomUserCreationForm(data=request.POST)
+        
+        if user_creation_form.is_valid():
+            user_creation_form.save()
+            user = authenticate(username=user_creation_form.cleaned_data['username'], password=user_creation_form.cleaned_data['password1'], email=user_creation_form.cleaned_data['email'])
+            login(request, user)
+            return redirect('home')
+    return render (request, 'registration/registration.html',data)
+
+"""
+def contacto_mail(request):
+    if request.method=="POST":   #detecta que se toca el boton en viar y vamos a trabajar para enviar a un mail la libreria de django .mail.
+        
+        mail=request.POST["asunto"]
+        
+        password=request.POST["password"]
+        
+        email_from=settings.EMAIL_HOST_USER
+        
+        recipient_list=["Nicolasfalzetta@outlook.com"]
+        
+        send_mail(subject, email_from, recipient_list) 
+        
+        return render(request,"gracias.html") #nos re dirige a una plantilla de mensaje al apretar el boton enviar es previo antes de las lineas de codigo importantes..
+    
+    return render(request, "registration.html")
+ """
