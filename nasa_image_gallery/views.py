@@ -60,22 +60,21 @@ def home(request):
 # función utilizada en el buscador.
 def search(request):
    
-    images, favourite_list = getAllImagesAndFavouriteList(request) 
+    images, favourite_list = getAllImagesAndFavouriteList(request)
     search_msg = request.POST.get('query', '') or request.GET.get('query', '') #Obtiene el término de búsqueda desde los parámetros POST o GET
     if search_msg=='':     #Si search_msg está vacío, llama a la función getAllImages sin parámetros para obtener todas las imágenes.  
         images = services_nasa_image_gallery.getAllImages(None)
     else:                  #Si hay un término de búsqueda, lo pasa a getAllImages y obtiene solo las imágenes de busqueda.
         images = services_nasa_image_gallery.getAllImages(search_msg)
-    
+
     page_number = request.GET.get('page', 1) #Obtiene el valor de la pagina actual, si no se proporciona toma por defecto 1
     items_per_page = request.GET.get('items_per_page', 5)  # Obtiene la cantidad de elementos por pagina, sino se proporciona usa por defecto 5.
-    try:
+    try: #captura el error
         items_per_page = int(items_per_page)
         if items_per_page < 1:
             items_per_page = 5
     except ValueError:
-        items_per_page = 5
-
+        items_per_page = 5  #si el numero no es valido coloca por defecto 5
     paginator = Paginator(images, items_per_page)
     page_obj = paginator.get_page(page_number)
 
