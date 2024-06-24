@@ -1,14 +1,15 @@
 class NASACard:
-    def __init__(self, title, description, image_url, date, user=None, id=None):
+    def __init__(self, title, description, image_url, date, user=None, id=None, comment=None):
         self.title = title
         self.description = description
         self.image_url = image_url
         self.date = date
         self.user = user
+        self.comment = comment
         self.id = id
 
     def __str__(self):
-        return f'Título: {self.title}, Descripción: {self.description}, URL de la imagen: {self.image_url}, Fecha: {self.date}, Usuario: {self.user}, Id: {self.id}'
+        return f'Título: {self.title}, Descripción: {self.description}, URL de la imagen: {self.image_url}, Fecha: {self.date}, Comentario: {self.comment}, Usuario: {self.user}, Id: {self.id}'
     
     # 2 NASACards son iguales si comparten el mismo title, description e image_url.
     # método equals.

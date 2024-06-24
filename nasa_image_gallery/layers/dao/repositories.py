@@ -11,7 +11,7 @@ def saveFavourite(image):
         return None
 
 def getAllFavouritesByUser(user):
-    favouriteList = Favourite.objects.filter(user=user).values('id', 'title', 'description', 'image_url', 'date')
+    favouriteList = Favourite.objects.filter(user=user).values('id', 'title', 'description', 'image_url', 'date','comment')
     return list(favouriteList)
 
 def deleteFavourite(id):
@@ -25,3 +25,13 @@ def deleteFavourite(id):
     except Exception as e:
         print(f"Error al eliminar el favorito: {e}")
         return False
+
+def updateFavourite(fav):
+    fav.save()
+    return fav
+
+def getFavouriteByUserAndDetails(user, title, description, image_url, date):
+    try:
+        return Favourite.objects.get(user=user, title=title, description=description, image_url=image_url, date=date)
+    except Favourite.DoesNotExist:
+        return None

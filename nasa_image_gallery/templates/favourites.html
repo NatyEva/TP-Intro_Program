@@ -17,6 +17,7 @@
                         <th>Título <i class="fa fa-sort"></i></th>
                         <th>Descripción</th>
                         <th>Fecha <i class="fa fa-sort"></i></th>
+                        <th>Comentario</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -28,6 +29,11 @@
                         <td>{{ favorito.title }}</td>
                         <td>{{ favorito.description }}</td>
                         <td>{{ favorito.date }}</td>
+                        {% if favorito.comment %}
+                        <td> {{ favorito.comment }}</td>
+                        {% else %}
+                        <td> </td>
+                        {% endif %}
                         <td>
                             <form method="post" action="{% url 'borrar-favorito' %}">
                                 {% csrf_token %}

@@ -12,8 +12,9 @@ urlpatterns = [
     path('favourites/', views.getAllFavouritesByUser, name='favoritos'),
     path('favourites/add/', views.saveFavourite, name='agregar-favorito'),
     path('favourites/delete/', views.deleteFavourite, name='borrar-favorito'),
+    path('save-favourite/', views.saveFavourite, name='guardar-favoritos'),
 
-    path('load_images/', views.load_images, name='load_images'),
+    path('load-images/', views.load_images, name='cargar-imagenes'),
 
     path('exit/', views.exit, name='exit'),
     

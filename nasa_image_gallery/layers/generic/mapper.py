@@ -20,7 +20,8 @@ def fromTemplateIntoNASACard(templ):
                         title=templ.POST.get("title"),
                         description=templ.POST.get("description"),
                         image_url=templ.POST.get("image_url"),
-                        date=templ.POST.get("date")
+                        date=templ.POST.get("date"),
+                        comment=templ.POST.get("comment")
                 )
     return nasa_card
 
@@ -33,5 +34,6 @@ def fromRepositoryIntoNASACard(repo_dict):
                         description=repo_dict['description'],
                         image_url=repo_dict['image_url'],
                         date=repo_dict['date'],
+                        comment=repo_dict['comment'] 
                 )
     return nasa_card
