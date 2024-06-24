@@ -13,7 +13,7 @@ from .layers.generic.mapper import fromTemplateIntoNASACard
 from django.http import HttpResponseBadRequest
 from django.core.mail import send_mail  #envia el mail a la casilla de la persona registrada
 from .forms import CustomUserCreationForm
-
+from django.conf import settings
 
 # función que invoca al template del índice de la aplicación.
 def index_page(request):
@@ -149,30 +149,19 @@ def registration(request):
         'form': CustomUserCreationForm()
     }
     if request.method=='POST':
+        
         user_creation_form = CustomUserCreationForm(data=request.POST)
         
         if user_creation_form.is_valid():
             user_creation_form.save()
             user = authenticate(username=user_creation_form.cleaned_data['username'], password=user_creation_form.cleaned_data['password1'], email=user_creation_form.cleaned_data['email'])
             login(request, user)
-            return redirect('home')
+            asunto = 'Registro Exitoso'
+            mensaje = 'A creado su usuario y contraseña de forma correcta'
+            email_admin = settings.EMAIL_HOST_USER
+            email_usuario = request.POST.get('email', '')   
+            send_mail(asunto, mensaje, email_admin, [email_usuario])
+            return redirect('home')   
+    
     return render (request, 'registration/registration.html',data)
 
-"""
-def contacto_mail(request):
-    if request.method=="POST":   #detecta que se toca el boton en viar y vamos a trabajar para enviar a un mail la libreria de django .mail.
-        
-        mail=request.POST["asunto"]
-        
-        password=request.POST["password"]
-        
-        email_from=settings.EMAIL_HOST_USER
-        
-        recipient_list=["Nicolasfalzetta@outlook.com"]
-        
-        send_mail(subject, email_from, recipient_list) 
-        
-        return render(request,"gracias.html") #nos re dirige a una plantilla de mensaje al apretar el boton enviar es previo antes de las lineas de codigo importantes..
-    
-    return render(request, "registration.html")
- """
