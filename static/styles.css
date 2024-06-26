@@ -4,6 +4,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+/* NAVBAR */
 
 .navbar {
     background-color: #007bff; 
@@ -46,14 +47,7 @@ h1 {
     margin-bottom: 20px; 
 }
 
-.search-box {
-    width: 300px; 
-    padding: 10px; 
-    border: 1px solid #ccc; /
-    border-radius: 5px; 
-    margin-right: 10px; 
-}
-
+/*BUTTONS */
 
 .btn {
     padding: 10px 20px; 
@@ -83,28 +77,7 @@ h1 {
     color: #fff; 
 }
 
-.table-responsive {
-    margin: 30px 0;
-}
-
-.table-wrapper {
-    min-width: 1000px;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.table-title {
-    padding-bottom: 10px;
-    margin: 0 0 10px;
-    min-width: 100%;
-}
-
-.table-title h2 {
-    margin: 8px 0 0;
-    font-size: 30px;
-    color: #007bff;
-}
+/* SEARCH */
 
 .search-box {
     width: 100%; 
@@ -128,6 +101,32 @@ h1 {
     color: #999; 
     font-style: italic; 
 }
+
+/* TABLES */
+
+.table-responsive {
+    margin: 30px 0;
+}
+
+.table-wrapper {
+    min-width: 1000px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.table-title {
+    padding-bottom: 10px;
+    margin: 0 0 10px;
+    min-width: 100%;
+}
+
+.table-title h2 {
+    margin: 8px 0 0;
+    font-size: 30px;
+    color: #007bff;
+}
+
 
 table.table tr th,
 table.table tr td {
@@ -173,6 +172,8 @@ table.table td a.delete {
 table.table td i {
     font-size: 19px;
 }
+
+/* PAGINATION */
 
 .pagination-container{
     margin-top: 30px;
@@ -246,6 +247,8 @@ table.table td i {
     font-size: 25px;
     
 }
+
+/* COMMENT */
 
 .comment-box {
     width: 100%; 

@@ -152,7 +152,7 @@ def registration(request):
         
         if user_creation_form.is_valid():
             user_creation_form.save()
-            user = authenticate(username=user_creation_form.cleaned_data['username'], password=user_creation_form.cleaned_data['password1'], email=user_creation_form.cleaned_data['email'])
+            user = authenticate(username=user_creation_form.cleaned_data['username'], first_name=user_creation_form.cleaned_data['first_name'], last_name=user_creation_form.cleaned_data['last_name'], password=user_creation_form.cleaned_data['password1'], email=user_creation_form.cleaned_data['email'])
             login(request, user)
             asunto = 'Registro Exitoso'
             mensaje = 'A creado su usuario y contraseña de forma correcta'
