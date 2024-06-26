@@ -14,7 +14,9 @@ def getAllImages(input=None):
     for object in json_collection: # recorre el listado de objetos del JSON
         try: #captura el error
 
-            if not (object['data'][0]['title'] == ""  and object['data'][0]['description'] == "" and  object['links'][0]['href'] == "" and object['data'][0]['date_created'][:10]==""):#validacion 
+            if not (object['data'][0]['title'] == ""  
+                    and object['data'][0]['description'] == "" and  
+                    object['links'][0]['href'] == "" and object['data'][0]['date_created'][:10]==""):#validacion 
             
                 nasa_card=mapper.fromRequestIntoNASACard(object)#formatea al abjeto en una Nasa Card            
                 images.append(nasa_card)#agrega a la lista imagenes una nasa_card    

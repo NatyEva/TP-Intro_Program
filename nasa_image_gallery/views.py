@@ -32,8 +32,7 @@ def getAllImagesAndFavouriteList(request):
 # función principal de la galería.
 def home(request):
     images, favourite_list = getAllImagesAndFavouriteList(request) # llama a la función auxiliar getAllImagesAndFavouriteList() y obtiene 2 listados: 
-    #uno de las imágenes de la API y otro de favoritos por usuario.Este último, solo si se desarrolló el opcional de favoritos; caso contrario, será un listado vacío [].
-    
+    #uno de las imágenes de la API y otro de favoritos por usuario.
 
     page_number = request.GET.get('page', 1) #btiene el número de la página actual desde los parámetros de la URL (GET request).
     # Si no se proporciona, usa 1 por defecto.
@@ -48,27 +47,26 @@ def home(request):
         items_per_page = 5 #Si `items_per_page` no es un número válido, lo ajusta a 5
 
     paginator = Paginator(images, items_per_page) #Crea una instancia de `Paginator` con la lista de imágenes y la cantidad de elementos por página.
-    #Paginator es una clase de Django que facilita la división de listas largas en páginas más manejables.
+  
     page_obj = paginator.get_page(page_number) #Obtiene el objeto de la página actual usando el número de la página.
 
     return render(request, 'home.html', {
         'page_obj': page_obj,'images': images,
         'favourite_list': favourite_list,
         'items_per_page': items_per_page,
-    }) # # Renderiza la plantilla `home.html`y pasa el contexto a la plantilla:
-    # `page_obj`: objeto de la página actual, que incluye las imágenes para la página y la información de paginación.
-    # `images`: la lista completa de imágenes.
-    # `favourite_list`: la lista de imágenes favoritas del usuar
+    }) # # Renderiza la plantilla `home.html`
 
 # función utilizada en el buscador.
 def search(request):
    
-    images, favourite_list = getAllImagesAndFavouriteList(request)
+    images,favourite_list = getAllImagesAndFavouriteList(request)
     search_msg = request.POST.get('query', '') or request.GET.get('query', '') #Obtiene el término de búsqueda desde los parámetros POST o GET
-    if search_msg=='':     #Si search_msg está vacío, llama a la función getAllImages sin parámetros para obtener todas las imágenes.  
-        images = services_nasa_image_gallery.getAllImages(None)
+    if search_msg=='':     #Si search_msg está vacío, llama a la función getAllImages sin parámetros para obtener todas las imágenes space.  
+        images= services_nasa_image_gallery.getAllImages(None)
+        
     else:                  #Si hay un término de búsqueda, lo pasa a getAllImages y obtiene solo las imágenes de busqueda.
         images = services_nasa_image_gallery.getAllImages(search_msg)
+        
 
     page_number = request.GET.get('page', 1) #Obtiene el valor de la pagina actual, si no se proporciona toma por defecto 1
     items_per_page = request.GET.get('items_per_page', 5)  # Obtiene la cantidad de elementos por pagina, sino se proporciona usa por defecto 5.
@@ -86,7 +84,7 @@ def search(request):
         'images': images,
         'favourite_list': favourite_list,
         'search_msg': search_msg,  # Pasa el término de búsqueda a la plantilla
-        'items_per_page': items_per_page, #La cantidad de elementos por página que se está utilizando actualmente
+        'items_per_page': items_per_page, 
     }) 
 
 # función que maneja la carga de imágenes y devuelve los datos en formato JSON
