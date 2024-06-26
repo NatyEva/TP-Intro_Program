@@ -135,7 +135,7 @@ def deleteFavourite(request):
 @login_required
 def exit(request):
     logout(request)
-    return redirect('home') # cuando cierro sesion me redirige al login automaticamente
+    return redirect('/') # cuando cierro sesion me dirige al inicio
 
 @login_required
 def login_views(request):

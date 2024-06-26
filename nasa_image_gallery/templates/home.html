@@ -2,15 +2,18 @@
 <main>
     <style>
         #nasacard-container {
+            margin-left: 20px;
+            margin-right: 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px; /* Espacio entre las tarjetas */
         }
         .card {
             border: 1px solid #ccc;
-            border-radius: 2px;
+            border-radius: 5px;
             padding: 5px;
             display: flex; /* Flexbox para alinear imagen y texto */
+            box-shadow:0 8px 9px rgba(0, 0.5, 0.5, 0.5); ;
             
         }
         .card img {
@@ -25,6 +28,7 @@
         .card-title, .card-text {
             margin: 0; /* Elimina el margen predeterminado de los encabezados y párrafos */
         }
+        
 
         #loading-spinner {
             position: fixed;
@@ -51,13 +55,13 @@
             }
         }
     </style>
-    <h1 class="text-center">Galería de Imágenes de la NASA</h1>
+    <h1 class="text-center" style="margin-top: 15px;">Galería de imágenes de la NASA</h1>
     <div class="d-flex justify-content-center" style="margin-bottom: 1%">
         <!-- Buscador del sitio -->
         <form class="d-flex" action="{% url 'buscar' %}" method="POST">
             {% csrf_token %}
-            <input class="form-control me-2" type="search" name="query" placeholder="Escribí una palabra" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Buscar</button>
+            <input class="search-box" type="search" name="query" placeholder="Escribí una palabra" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
         </form>
     </div>
 
@@ -85,11 +89,12 @@
                         <input type="hidden" name="image_url" value="{{ card.image_url }}">
                         <input type="hidden" name="date" value="{{ card.date }}"> 
                         {% if card in favourite_list %}
-                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled>✔️ Ya está añadida a favoritos</button>
-                        <textarea name="comment" placeholder="Añadir comentario..." required></textarea> <!-- Campo para el comentario -->
-                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">Guardar comentario</button> 
+                        
+                        <textarea class="comment-box" name="comment" placeholder="Añadir comentario..." required></textarea> <!-- Campo para el comentario -->
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white" disabled> Ya está añadida a favoritos ✔️</button>
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">Comentar 🗨️</button> 
                     {% else %}
-                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white">❤️ Añadir a favoritos</button> 
+                        <button type="submit" class="btn btn-primary btn-sm float-left" style="color:white"> Añadir a favoritos ❤️</button> 
                     {% endif %}
 
                     </form>
@@ -99,30 +104,63 @@
         </div>
         {% endfor %}
     </div>
-    <div>
-        <span>
-            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-        </span>
+    <div class="pagination-container"> 
+
         <div>
-            {% if page_obj.has_previous %}
-                <a href="?page=1&items_per_page={{ items_per_page }}&query={{ search_msg }}">Primera</a>
-                <a href="?page={{ page_obj.previous_page_number }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Anterior</a>
-            {% endif %}
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Siguiente</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}&items_per_page={{ items_per_page }}&query={{ search_msg }}">Última</a>
-            {% endif %}
+            <span>
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+            <div>
+                {% if page_obj.has_previous %}
+                    <div class="d-inline-block">
+                        <form action="" method="GET">
+                            <input type="hidden" name="page" value="1">
+                            <input type="hidden" name="items_per_page" value="{{ items_per_page }}">
+                            <input type="hidden" name="query" value="{{ search_msg }}">
+                            <button type="submit" class="btn btn-primary">Primera</button>
+                        </form>
+                    </div>
+                    <div class="d-inline-block">
+                        <form action="" method="GET">
+                            <input type="hidden" name="page" value="{{ page_obj.previous_page_number }}">
+                            <input type="hidden" name="items_per_page" value="{{ items_per_page }}">
+                            <input type="hidden" name="query" value="{{ search_msg }}">
+                            <button type="submit" class="btn btn-primary">Anterior</button>
+                        </form>
+                    </div>
+                    <div style="width: 20px; display: inline-block;"></div>
+                {% else %}
+                    <div class="d-inline-block">
+                        <button type="button" class="btn btn-secondary" disabled>Anterior</button>
+                    </div>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <div class="d-inline-block">
+                        <form action="" method="GET">
+                            <input type="hidden" name="page" value="{{ page_obj.next_page_number }}">
+                            <input type="hidden" name="items_per_page" value="{{ items_per_page }}">
+                            <input type="hidden" name="query" value="{{ search_msg }}">
+                            <button type="submit" class="btn btn-primary">Siguiente</button>
+                        </form>
+                    </div>
+                    <div class="d-inline-block">
+                        <form action="" method="GET">
+                            <input type="hidden" name="page" value="{{ page_obj.paginator.num_pages }}">
+                            <input type="hidden" name="items_per_page" value="{{ items_per_page }}">
+                            <input type="hidden" name="query" value="{{ search_msg }}">
+                            <button type="submit" class="btn btn-primary">Última</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    </div>
-    <div>
-        <form method="GET" id="itemsPerPageForm">
-            <label for="items_per_page">Items por página:</label>
-            <input type="number" name="items_per_page" id="items_per_page" value="{{ items_per_page }}" min="1" onchange="this.form.submit()">
-            <input type="hidden" name="query" value="{{ search_msg }}">
-        </form>
-    </div>
-    <div>
-    <h1 class="text-center">Galería de Imágenes de la NASA</h1>   
+        <div class="items-per-page-form text-center">
+            <form method="GET" id="itemsPerPageForm">
+                <label for="items_per_page">Items por página:</label>
+                <input type="number" name="items_per_page" id="items_per_page" value="{{ items_per_page }}" min="1" onchange="this.form.submit()">
+                <input type="hidden" name="query" value="{{ search_msg }}">
+            </form>
+        </div>
     </div>
 
     <script>
